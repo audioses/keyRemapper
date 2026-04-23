@@ -1,0 +1,140 @@
+# Default header for MUTT
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+msgid "Navigation"
+msgstr "Gezinti"
+
+msgid "System"
+msgstr "Sistem"
+
+msgid "Function keys"
+msgstr "Fonksiyon tuşları"
+
+msgid "Numpad"
+msgstr "Sayısal tuş takımı"
+
+msgid "Media"
+msgstr "Medya"
+
+msgid "Browser"
+msgstr "Tarayıcı"
+
+msgid "Launch"
+msgstr "Başlat"
+
+msgid "Alt chords"
+msgstr "Alt kombinasyonları"
+
+msgid "Control chords"
+msgstr "Kontrol kombinasyonları"
+
+msgid "Windows chords"
+msgstr "Windows kombinasyonları"
+
+msgid "Select Key to Execute"
+msgstr "Basılacak Tuşu Seçin"
+
+msgid "&Filter:"
+msgstr "&Filtre:"
+
+msgid "Filter"
+msgstr "Filtre"
+
+msgid "&Keys:"
+msgstr "&Tuşlar:"
+
+msgid "Keys"
+msgstr "Tuşlar"
+
+msgid "Select"
+msgstr "Seç"
+
+msgid "Cancel"
+msgstr "İptal"
+
+msgid "Key Remapper"
+msgstr "Tuş basıcı"
+
+msgid ""
+"Map a key. Single press: target by keypress. Double press: target from "
+"dialog."
+msgstr ""
+"Bir tuş atayın. Tek basım: tuşla hedef seçer. Çift basım: listeden hedef "
+"seçer."
+
+msgid ""
+"Execute a mapped key. Single press: by keypress. Double press: pick from "
+"dialog."
+msgstr ""
+"Eşlenmiş bir tuşa bas. Tek basım: tuş basımıyla. Çift basım: iletişim "
+"kutusundan seç."
+
+msgid "Press the key to execute"
+msgstr "Basılacak tuşa basın"
+
+msgid "Press the source key, then pick the target from the dialog."
+msgstr "Kaynak tuşa basın, ardından iletişim kutusundan hedefi seçin."
+
+msgid "Press the source key, then press the target key."
+msgstr "Kaynak tuşa basın, ardından hedef tuşa basın."
+
+msgid "Source key captured: {}. Now press the target key."
+msgstr "Kaynak tuş yakalandı: {}. Şimdi hedef tuşa basın."
+
+msgid "Source key captured: {}. Choose the target from the dialog."
+msgstr "Kaynak tuş yakalandı: {}. İletişim kutusundan hedefi seçin."
+
+msgid "Mapping created: {} -> {}"
+msgstr "Eşleme oluşturuldu: {} -> {}"
+
+msgid "Executed mapped key: {} -> {}"
+msgstr "Eşlenmiş tuşa basıldı."
+
+msgid "Failed to execute mapped key"
+msgstr "Eşlenmiş tuşa basılamadı."
+
+msgid "No mapping found for key: {}"
+msgstr "Tuş için eşleme bulunamadı: {}"
+
+msgid "Executed key: {}"
+msgstr "Basılan tuş: {}"
+
+msgid "Select Target Key for {}"
+msgstr "{} için Hedef Tuşu Seçin"
+
+msgid "Mapping cancelled."
+msgstr "Eşleme iptal edildi."
+
+msgid ""
+"Allows remapping of keyboard keys that may be missing from your keyboard "
+"layout.\n"
+"Provides functionality to map one key to another and execute the mapped keys."
+msgstr ""
+"Klavye düzeninizde eksik olabilecek klavye tuşlarının yeniden atanmasını "
+"sağlar.\n"
+"Bir tuşu diğerine eşleme ve eşlenen tuşları yürütme işlevselliği sunar."
+
+msgid ""
+"Initial release of Key Remapper addon.\n"
+"- Key mapping functionality\n"
+"- Key execution functionality\n"
+"- Key selection menu\n"
+"- Full translation support"
+msgstr ""
+"Key Remapper eklentisinin ilk sürümü.\n"
+"- Tuş eşleme işlevselliği\n"
+"- Tuş yürütme işlevselliği\n"
+"- Tuş seçim menüsü\n"
+"- Tam çeviri desteği"

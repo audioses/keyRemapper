@@ -1,0 +1,1 @@
+# Global plugins package for Key Remapper addon
