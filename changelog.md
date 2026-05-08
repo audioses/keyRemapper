@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.0 — Bugfix
+Nvda modifier keys will now be captured and used properly
+
 ## 1.0.0 — Initial release
 
 * Create key mappings with `NVDA+Shift+X`

@@ -24,14 +24,10 @@ addon_info = AddonInfo(
 	addon_description=_("""Allows remapping of keyboard keys that may be missing from your keyboard layout.
 Provides functionality to map one key to another and execute the mapped keys."""),
 	# version
-	addon_version="1.0.0",
+	addon_version="1.1.0",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
-	addon_changelog=_("""Initial release of Key Remapper addon.
-- Key mapping functionality
-- Key execution functionality
-- Key selection menu
-- Full translation support"""),
+	addon_changelog=_("nvda modifier keys will now captured properly"),
 	# Author(s)
 	addon_author="Ömer Yılmaz <info@audioses.com>",
 	# URL for the add-on documentation support
