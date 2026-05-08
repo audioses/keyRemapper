@@ -11,6 +11,12 @@ addonHandler.initTranslation()
 # Category titles are wrapped in _() at display time, see _build_items().
 _KEY_CATEGORIES = [
 	# Translators: Category of keys in the key selection dialog.
+	(_("Modifiers"), [
+		"alt", "control", "shift", "windows", "NVDA",
+		"leftShift", "rightShift", "leftControl", "rightControl",
+		"leftAlt", "rightAlt", "leftWindows", "rightWindows",
+	]),
+	# Translators: Category of keys in the key selection dialog.
 	(_("Navigation"), [
 		"tab", "escape", "backspace", "enter", "space", "applications",
 		"upArrow", "downArrow", "leftArrow", "rightArrow",

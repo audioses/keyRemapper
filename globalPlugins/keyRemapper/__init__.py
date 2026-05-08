@@ -47,15 +47,21 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		super().terminate()
 
 	@script(
-		description=_("Map a key. Single press: target by keypress. Double press: target from dialog."),
+		description=_(
+			"Map a key. Single press: source + target by keypress. "
+			"Double press: target from dialog. "
+			"Triple press: source and target from dialog."
+		),
 		category=SCRIPT_CATEGORY,
 		gestures=["kb:NVDA+shift+x"],
 	)
 	def script_toggleMappingMode(self, gesture):
 		count = scriptHandler.getLastScriptRepeatCount()
-		# Single → key-by-key; double (or more) → dialog target.
-		target_from_dialog = (count >= 1)
-		self._begin_mapping(target_from_dialog=target_from_dialog)
+		# 0 → kbd/kbd, 1 → kbd/dialog, 2+ → dialog/dialog.
+		self._begin_mapping(
+			target_from_dialog=(count >= 1),
+			source_from_dialog=(count >= 2),
+		)
 
 	@script(
 		description=_("Execute a mapped key. Single press: by keypress. Double press: pick from dialog."),
@@ -80,13 +86,19 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self._captured_source_key = None
 			wx.CallAfter(self._open_key_selection_menu)
 
-	def _begin_mapping(self, target_from_dialog):
-		"""Start (or restart) mapping mode with the requested target style."""
+	def _begin_mapping(self, target_from_dialog, source_from_dialog=False):
+		"""Start (or restart) mapping mode with the requested capture style."""
 		# Swap capture type if a previous press of the same gesture already
 		# initiated mapping within the multi-press window.
 		self._cancel_capture()
 		self._mapping_mode = True
 		self._captured_source_key = None
+		if source_from_dialog:
+			self._capture_type = None
+			tones.beep(1000, 100)
+			ui.message(_("Pick the source from the dialog, then pick the target."))
+			wx.CallAfter(self._pick_source_from_dialog_then_target)
+			return
 		self._capture_type = "source_for_dialog" if target_from_dialog else "source"
 		tones.beep(1000, 100)
 		self._start_capture()
@@ -131,14 +143,26 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		except Exception:
 			pass
 		main = gesture.mainKeyName
-		# Ignore pure modifier-only presses (wait for the real key).
-		if not main or main in self._MODIFIER_NAMES:
+		if not main:
+			return True
+		# Source/target capture must wait for a real (non-modifier) key
+		# so chords like NVDA+T or alt+f4 can be captured intact —
+		# otherwise NVDA's standalone-modifier gesture fires on the
+		# first key and the chord never completes. Execute capture is
+		# allowed to consume modifier-only presses so a mapping whose
+		# source is a standalone modifier (picked via the dialog) can
+		# still be triggered.
+		if main in self._MODIFIER_NAMES and self._capture_type != "execute":
 			return True
 		# Build the full key name including modifiers, e.g. "alt+f4".
 		try:
 			mods = list(gesture.modifierNames)
 		except Exception:
 			mods = []
+		# NVDA may report main="alt" with mods=["alt"] for a modifier-only
+		# press — strip the duplicate so the captured name is just "alt".
+		if mods and main in mods:
+			mods = [m for m in mods if m != main]
 		key_name = "+".join(mods + [main]) if mods else main
 		self._cancel_capture()
 		wx.CallAfter(self._handle_captured_key, key_name)
@@ -211,6 +235,18 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self._capture_type = None
 		self._captured_source_key = None
 
+	def _pick_source_from_dialog_then_target(self):
+		source = self._show_dialog(_("Select Source Key"))
+		if not source:
+			ui.message(_("Mapping cancelled."))
+			self._mapping_mode = False
+			self._capture_type = None
+			self._captured_source_key = None
+			return
+		self._captured_source_key = source
+		ui.message(_("Source key: {}. Now pick the target.").format(source))
+		self._pick_target_from_dialog()
+
 	def _load_config(self):
 		self._key_mappings = {}
 		try:
@@ -232,11 +268,31 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			pass
 
 	def _execute_key(self, key_name):
+		"""Execute a key by name.
+
+		Tries NVDA's gesture emulation first so chords using the NVDA
+		modifier (e.g. "NVDA+t") actually invoke the bound NVDA script —
+		``gesture.send()`` alone would only inject the underlying key
+		into the OS, and NVDA filters its own injected input out of its
+		hook, so the script would never run. Falls back to a physical
+		key injection for plain OS-level keys (e.g. "control+c") that
+		have no NVDA script bound.
+		"""
 		try:
 			gesture = KeyboardInputGesture.fromName(key_name)
-			if gesture:
-				gesture.send()
-				return True
+		except Exception:
+			return False
+		if not gesture:
+			return False
+		try:
+			inputCore.manager.emulateGesture(gesture)
+			return True
+		except inputCore.NoInputGestureAction:
+			pass
 		except Exception:
 			pass
-		return False
+		try:
+			gesture.send()
+			return True
+		except Exception:
+			return False
